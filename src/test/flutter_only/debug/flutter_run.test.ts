@@ -237,7 +237,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("can hot reload", async () => {
+		it("can hot reload", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			const config = await startDebugger(flutterHelloWorldMainFile);
 			await Promise.all([
 				watchPromise("hot_reloads_successfully->configurationSequence", dc.configurationSequence()),
@@ -353,6 +356,9 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 					: ` after ${numReloads} reload${numReloads === 1 ? "" : "s"}`;
 
 			it("stops at a breakpoint" + reloadDescription, async function () {
+				if (deviceId === "chrome")
+					this.skip();
+
 				if (numReloads && extApi.flutterCapabilities.hasEvictBug) {
 					this.skip();
 					return;
@@ -435,7 +441,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 
 		it("stops at a breakpoint in an external package");
 
-		it("steps into the SDK if debugSdkLibraries is true", async () => {
+		it("steps into the SDK if debugSdkLibraries is true", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldMainFile);
 			// Get location for `print`
 			const printCall = positionOf("pri^nt(");
@@ -488,7 +497,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("steps into an external library if debugExternalLibraries is true", async () => {
+		it("steps into an external library if debugExternalLibraries is true", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldHttpFile);
 			// Get location for `http.read(`
 			const httpReadCall = positionOf("http.re^ad(");
@@ -541,7 +553,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("steps into a local library even if debugExternalLibraries is false", async () => {
+		it("steps into a local library even if debugExternalLibraries is false", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldLocalPackageFile);
 			// Get location for `printMyThing()`
 			const printMyThingCall = positionOf("printMy^Thing(");
@@ -573,7 +588,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 
 		it("downloads SDK source code from the VM");
 
-		it("correctly marks non-debuggable SDK frames when debugSdkLibraries is false", async () => {
+		it("correctly marks non-debuggable SDK frames when debugSdkLibraries is false", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldThrowInSdkFile);
 			const config = await startDebugger(flutterHelloWorldThrowInSdkFile, { debugSdkLibraries: false });
 			await Promise.all([
@@ -593,7 +611,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("correctly marks debuggable SDK frames when debugSdkLibraries is true", async () => {
+		it("correctly marks debuggable SDK frames when debugSdkLibraries is true", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldThrowInSdkFile);
 			const config = await startDebugger(flutterHelloWorldThrowInSdkFile, { debugSdkLibraries: true });
 			await Promise.all([
@@ -613,7 +634,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("correctly marks non-debuggable external library frames when debugExternalLibraries is false", async () => {
+		it("correctly marks non-debuggable external library frames when debugExternalLibraries is false", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldThrowInExternalPackageFile);
 			const config = await startDebugger(flutterHelloWorldThrowInExternalPackageFile, { debugExternalLibraries: false });
 			await Promise.all([
@@ -633,7 +657,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("correctly marks debuggable top frames even if not debuggable, if breakpoint/stepping", async () => {
+		it("correctly marks debuggable top frames even if not debuggable, if breakpoint/stepping", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			// There is an exception(!) to the deemphasiezed rule. If the reason we stopped was not an exception, the top
 			// frame should never be deemphasized, as the user has explicitly decided to break (or step) there.
 			await openFile(flutterHelloWorldPathFile);
@@ -670,7 +697,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("correctly marks debuggable external library frames when debugExternalLibraries is true", async () => {
+		it("correctly marks debuggable external library frames when debugExternalLibraries is true", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldThrowInExternalPackageFile);
 			const config = await startDebugger(flutterHelloWorldThrowInExternalPackageFile, { debugExternalLibraries: true });
 			await Promise.all([
@@ -690,7 +720,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("correctly marks debuggable local library frames even when debugExternalLibraries is false", async () => {
+		it("correctly marks debuggable local library frames even when debugExternalLibraries is false", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldThrowInLocalPackageFile);
 			const config = await startDebugger(flutterHelloWorldThrowInLocalPackageFile, { debugExternalLibraries: false });
 			await Promise.all([
@@ -711,7 +744,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 		});
 
 		function testBreakpointCondition(condition: string, shouldStop: boolean, expectedError?: string) {
-			return async () => {
+			return async function (this: Mocha.Context) {
+				if (deviceId === "chrome")
+					this.skip();
+
 				await openFile(flutterHelloWorldMainFile);
 				const config = await startDebugger(flutterHelloWorldMainFile);
 
@@ -752,7 +788,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 		it("doesn't stop at a breakpoint with a condition returning null", testBreakpointCondition("print('test');", false));
 		it("reports errors evaluating breakpoint conditions", testBreakpointCondition("1 + '1'", false, "Debugger failed to evaluate expression `1 + '1'`"));
 
-		it("logs expected text (and does not stop) at a logpoint", async () => {
+		it("logs expected text (and does not stop) at a logpoint", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldMainFile);
 			const config = await startDebugger(flutterHelloWorldMainFile);
 
@@ -775,7 +814,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("provides local variables when stopped at a breakpoint", async () => {
+		it("provides local variables when stopped at a breakpoint", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await setConfigForTest("dart", "previewToStringInDebugViews", true);
 			await openFile(flutterHelloWorldMainFile);
 			const debugConfig = await startDebugger(flutterHelloWorldMainFile);
@@ -860,7 +902,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("excludes type args from local variables when stopped at a breakpoint in a generic method", async () => {
+		it("excludes type args from local variables when stopped at a breakpoint in a generic method", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldMainFile);
 			const debugConfig = await startDebugger(flutterHelloWorldMainFile);
 			await dc.hitBreakpoint(debugConfig, {
@@ -879,7 +924,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("includes getters in variables when stopped at a breakpoint", async () => {
+		it("includes getters in variables when stopped at a breakpoint", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldGettersFile);
 			const config = await startDebugger(flutterHelloWorldGettersFile);
 			await dc.hitBreakpoint(config, {
@@ -903,7 +951,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 
 		// Currently skipped because we sometimes get different text from locals, eg.:
 		// "StatelessElement" vs "StatelessElement (MyHomepage(dirty))" 🤔
-		it.skip("watch expressions provide same info as locals", async () => {
+		it.skip("watch expressions provide same info as locals", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldMainFile);
 			const config = await startDebugger(flutterHelloWorldMainFile);
 			await dc.hitBreakpoint(config, {
@@ -929,7 +980,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("evaluateName evaluates to the expected value", async () => {
+		it("evaluateName evaluates to the expected value", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldMainFile);
 			const config = await startDebugger(flutterHelloWorldMainFile);
 			await dc.hitBreakpoint(config, {
@@ -967,7 +1021,12 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		describe("can evaluate at breakpoint", () => {
+		describe("can evaluate at breakpoint", function () {
+			this.beforeEach(function () {
+				if (deviceId === "chrome")
+					this.skip();
+			});
+
 			it("simple expressions", async () => {
 				await openFile(flutterHelloWorldMainFile);
 				const config = await startDebugger(flutterHelloWorldMainFile);
