@@ -191,7 +191,7 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 
 		it("receives the expected output", async function () {
 			if (deviceId === "chrome")
-				this.skip()
+				this.skip();
 
 			const config = await startDebugger(flutterHelloWorldMainFile);
 			await Promise.all([
