@@ -165,7 +165,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			await waitForResult(() => extApi.debugCommands.flutterExtensions.serviceExtensionIsLoaded(FlutterServiceExtension.DebugBanner) === false);
 		});
 
-		it("can quit during a build", async () => {
+		it("can quit during a build", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			const config = await startDebugger(flutterHelloWorldMainFile);
 			// Kick off a build, but do not await it...
 			Promise.all([
@@ -186,7 +189,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("receives the expected output", async () => {
+		it("receives the expected output", async function () {
+			if (deviceId === "chrome")
+				this.skip()
+
 			const config = await startDebugger(flutterHelloWorldMainFile);
 			await Promise.all([
 				dc.configurationSequence(),
@@ -276,7 +282,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("can run projects in sub-folders when the open file is in a project sub-folder", async () => {
+		it("can run projects in sub-folders when the open file is in a project sub-folder", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldExampleSubFolderMainFile);
 			const config = await startDebugger();
 			await Promise.all([
@@ -298,7 +307,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("can run projects in sub-folders when cwd is set to a project sub-folder", async () => {
+		it("can run projects in sub-folders when cwd is set to a project sub-folder", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			const config = await startDebugger(undefined, { cwd: "example" });
 			await Promise.all([
 				dc.configurationSequence(),
@@ -474,7 +486,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("does not step into the SDK if debugSdkLibraries is false", async () => {
+		it("does not step into the SDK if debugSdkLibraries is false", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldMainFile);
 			// Get location for `print`
 			const printCall = positionOf("pri^nt(");
@@ -530,7 +545,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("does not step into an external library if debugExternalLibraries is false", async () => {
+		it("does not step into an external library if debugExternalLibraries is false", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldHttpFile);
 			// Get location for `http.read(`
 			const httpReadCall = positionOf("http.re^ad(");
@@ -1172,7 +1190,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("writes exception to stderr", async () => {
+		it("writes exception to stderr", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldBrokenFile);
 			const config = await startDebugger(flutterHelloWorldBrokenFile);
 			await Promise.all([
@@ -1213,6 +1234,9 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 		});
 
 		it("renders correct output for structured errors", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			if (!extApi.flutterCapabilities.hasUpdatedStructuredErrorsFormat) {
 				this.skip();
 				return;
