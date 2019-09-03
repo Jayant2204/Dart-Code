@@ -12,7 +12,7 @@ import { DartDebugClient } from "../../dart_debug_client";
 import { ensureFrameCategories, ensureMapEntry, ensureVariable, ensureVariableWithIndex, isExternalPackage, isLocalPackage, isSdkFrame, isUserCode, killFlutterTester } from "../../debug_helpers";
 import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHelloWorldBrokenFile, flutterHelloWorldExampleSubFolder, flutterHelloWorldExampleSubFolderMainFile, flutterHelloWorldFolder, flutterHelloWorldGettersFile, flutterHelloWorldHttpFile, flutterHelloWorldLocalPackageFile, flutterHelloWorldMainFile, flutterHelloWorldPathFile, flutterHelloWorldThrowInExternalPackageFile, flutterHelloWorldThrowInLocalPackageFile, flutterHelloWorldThrowInSdkFile, getDefinition, getLaunchConfiguration, getPackages, openFile, positionOf, sb, setConfigForTest, waitForResult, watchPromise } from "../../helpers";
 
-["flutter-tester", "chrome"].forEach((deviceId) => {
+["chrome"].forEach((deviceId) => {
 	describe(`flutter run debugger (launch on ${deviceId})`, () => {
 		// We have tests that require external packages.
 		before("get packages", () => getPackages());
@@ -1208,7 +1208,10 @@ import { activate, defer, delay, ext, extApi, fileSafeCurrentTestName, flutterHe
 			]);
 		});
 
-		it("moves known files from call stacks to metadata", async () => {
+		it("moves known files from call stacks to metadata", async function () {
+			if (deviceId === "chrome")
+				this.skip();
+
 			await openFile(flutterHelloWorldBrokenFile);
 			const config = await startDebugger(flutterHelloWorldBrokenFile);
 			await Promise.all([
